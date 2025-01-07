@@ -67,26 +67,26 @@ export const createNewUser = async (req : Request, res : Response) => {
 // Get Single User 
 export const getSingleUser = async (req : Request, res : Response) => {
     try {
-    const {id} = req.params
+        const {id} = req.body 
 
-    const user = await prisma.users.findUnique({
-        where : {id: parseInt(id)}
-    })
-
-    if(!user) {
-        res.status(400).json({
-            isSuccess : false,
-            message : "User not found!"
+        const user = await prisma.users.findUnique({
+            where : {id: parseInt(id)}
         })
 
-        return
-    }
+        if(!user){
+            res.status(404).json({
+                isSuccess : false,
+                message : "User not found!"
+            })
 
-    res.status(200).json({
-        isSuccess : true,
-        message : "Successfully fetched user!",
-        user
-    })
+            return
+        }
+
+        res.status(200).json({
+            isSuccess : true,
+            message : "Successfully fetched user!",
+            user
+        })
 
     } catch (error) {
         console.log(error)
@@ -100,23 +100,25 @@ export const getSingleUser = async (req : Request, res : Response) => {
 export const updateUser = async (req : Request, res : Response) => {
     try {
         const {id} = req.params
-        const {username, password, phone_number} = req.body
-    
+        const {username, password, phone_number} = req.body 
+
         if(!id || (!username && !password && !phone_number)){
             res.status(400).json({
                 isSuccess : false,
-                message : "User ID and at least one field to update are required."
+                message : "User ID and at least one field to update are required"
             })
+
+            return
         }
 
         const user = await prisma.users.update({
-            where : {id : parseInt(id)},
-            data : {username, password, phone_number}
+            where:{id: parseInt(id)},
+            data: {username, password, phone_number}
         })
 
         res.status(200).json({
             isSuccess : true,
-            message : "Successfully Updated user!",
+            message : "User successfully updated!",
             user
         })
 
