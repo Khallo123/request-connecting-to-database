@@ -8,13 +8,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model users {
   id Int @id @default(autoincrement())
-  password String
   username String
+  password String
   phone_number String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@unique([username, phone_number])
+  @@unique([username, password])
 }

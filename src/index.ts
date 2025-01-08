@@ -5,8 +5,8 @@ import userRoute from './routes/userRoute'
 dotenv.config()
 const PORT = process.env.PORT
 
-app.use(express.json())
 
+app.use(express.json())
 
 app.use('/users', userRoute)
 
